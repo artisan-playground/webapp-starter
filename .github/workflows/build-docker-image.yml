@@ -1,0 +1,21 @@
+name: Build Docker Image
+on:
+  push:
+env:
+  PROJECT_ID: nat-playground
+  SERVICE_NAME: webapp-starter
+#   RUN_REGION: us-central1
+jobs:
+  build-docker-hub:
+    name: Build it!
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build
+        run: |
+          ./build.sh
+          docker build -t "gcr.io/$PROJECT_ID/$SERVICE_NAME:${GITHUB_SHA}" .
