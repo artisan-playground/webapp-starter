@@ -5,62 +5,44 @@ on:
 env:
   PROJECT_ID: ${{ secrets.PROJECT_ID }}
   RUN_REGION: us-central1
-  SERVICE_NAME: webapp-starter
+  SERVICE_NAME: ${{ secrets.SERVICE_NAME }}
 
 jobs:
-  build-docker-hub:
-    name: Build it!
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      matrix:
-        operating-system: [ubuntu-latest]
+  setup-build-deploy:
+    name: Setup, Build, and Deploy
+    runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-#   #     - name: Build and push Docker images
-#   #       uses: docker/build-push-action@v1
-#   #       with:
-#   #         username: ${{ secrets.DOCKER_USERNAME }}
-#   #         password: ${{ secrets.DOCKER_PASSWORD }}
-#   #         repository: nazt/myrepository
-#   #         tag_with_ref: true
-#   #         tag_with_sha: true
-#   #         tags: lates
+      - name: Checkout
+        uses: actions/checkout@v1
+      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          version: '275.0.0'
+          service_account_email: ${{ secrets.SA_EMAIL }}
+          service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS}}
 
-#   setup-build-deploy:
-#     name: Setup, Build, and Deploy
-#     runs-on: ubuntu-latest
-
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v1
-
-#       # Setup gcloud CLI
-#       - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-#         with:
-#           version: '275.0.0'
-#           service_account_email: ${{ secrets.SA_EMAIL }}
-#           service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS}}
-
-#       # Configure gcloud CLI
-#       - name: gcloud Set up
-#         run: |
-#           gcloud config set project $PROJECT_ID
-#       # Build and push image to Google Container Registry
-#       - name: Build
-#         run: |
-#           cd ui-dashboard/vue-app
-#           gcloud builds submit -t gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA
-#           # gcloud auth configure-docker
-#           # echo "gcr.io/$PROJECT_ID/$SERVICE_NAME:${SEMAPHORE_GIT_SHA:0:7}"
-#           # docker build -t "gcr.io/$PROJECT_ID/$SERVICE_NAME:${GITHUB_SHA}" .
-#           # docker push "gcr.io/$PROJECT_ID/$SERVICE_NAME:${GITHUB_SHA}"
-#       # Deploy image to Cloud Run
-#       - name: Deploy
-#         run: |
-#           gcloud run deploy $SERVICE_NAME \
-#             --region $RUN_REGION \
-#             --image gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA \
-#             --platform managed
-#       # tag_with_ref: true
-#       # push: ${{ startsWith(github.ref, 'refs/tags/') }}
+      # Configure gcloud CLI
+      - name: gcloud Set up
+        run: |
+          gcloud config set project $PROJECT_ID
+      # Build and push image to Google Container Registry
+      - name: Build
+        run: |
+          pushd vue-app
+          yarn
+          yarn build
+          popd
+          gcloud builds submit -t gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA
+          # gcloud auth configure-docker
+          # echo "gcr.io/$PROJECT_ID/$SERVICE_NAME:${SEMAPHORE_GIT_SHA:0:7}"
+          # docker build -t "gcr.io/$PROJECT_ID/$SERVICE_NAME:${GITHUB_SHA}" .
+          # docker push "gcr.io/$PROJECT_ID/$SERVICE_NAME:${GITHUB_SHA}"
+      # Deploy image to Cloud Run
+      - name: Deploy
+        run: |
+          gcloud run deploy $SERVICE_NAME \
+            --region $RUN_REGION \
+            --image gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA \
+            --platform managed
+      # tag_with_ref: true
+      # push: ${{ startsWith(github.ref, 'refs/tags/') }}

@@ -36,3 +36,9 @@ jobs:
           repository: ${{ secrets.DOCKER_REPO }}
           tag_with_ref: true
           push: ${{ startsWith(github.ref, 'refs/tags/') }}
+#         tag_with_ref: true
+#         tag_with_sha: true
+#         tags: lates
+#         registry: gcr.io
+#         repository: myorg/myrepository
+#         tags: latest
