@@ -12,4 +12,6 @@ popd
 
 
 # docker build -t nazt/webapp-starter .
+# docker push nazt/webapp-starter
 # docker run --rm -it -p4000:4000 --init nazt/webapp-starter
+# docker run --rm -it -p4000:4000 nazt/webapp-starter
