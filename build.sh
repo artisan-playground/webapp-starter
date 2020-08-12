@@ -5,7 +5,7 @@ yarn install
 yarn build
 popd
 
-pushd react-app
-yarn install
-yarn build
-popd
+# pushd react-app
+# yarn install
+# yarn build
+# popd
