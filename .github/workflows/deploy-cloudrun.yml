@@ -1,4 +1,4 @@
-name: deploy-cloudrun
+name: Deploy Google Cloud Run
 on:
   push:
 
@@ -6,6 +6,7 @@ env:
   PROJECT_ID: ${{ secrets.PROJECT_ID }}
   RUN_REGION: us-central1
   SERVICE_NAME: webapp-starter
+
 jobs:
   build-docker-hub:
     name: Build it!
