@@ -1,6 +1,5 @@
-# Use the official lightweight Node.js 12 image.
 # https://hub.docker.com/_/node
-FROM node:10-slim
+FROM node:lts-alpine
 
 # Create and change to the app directory.
 WORKDIR /usr/src/app
@@ -10,15 +9,16 @@ WORKDIR /usr/src/app
 # Copying this separately prevents re-running npm install on every code change.
 COPY package*.json ./
 
+ENV NODE_ENV=production
+
 # Install production dependencies.
 # RUN npm install --only=production
-RUN npm install
+RUN npm install --only=production
 
-# Copy local code to the container image.
-
-COPY ./vue-app/dist ./vue-app/dist
+# Copy local code to the container image. 
 # COPY ./react-app/build ./react-app
 
+COPY ./vue-app/dist ./vue-app/dist 
 COPY ./server.js .
 
 # RUN npm run build
