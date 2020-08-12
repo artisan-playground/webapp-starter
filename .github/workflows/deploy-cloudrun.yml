@@ -1,22 +1,21 @@
-# name: deploy-cloudrun
-# on:
-#   push:
+name: deploy-cloudrun
+on:
+  push:
 
-# env:
-#   PROJECT_ID: ${{ secrets.PROJECT_ID }}
-#   RUN_REGION: us-central1
-#   SERVICE_NAME: webapp-starter
-# jobs:
-#   # build-docker-hub:
-#   #   name: Build it!
-#   #   runs-on: ${{ matrix.operating-system }}
-#   #   strategy:
-#   #     matrix:
-#   #       operating-system: [ubuntu-latest]
-
-#   #   steps:
-#   #     - name: Checkout code
-#   #       uses: actions/checkout@v2
+env:
+  PROJECT_ID: ${{ secrets.PROJECT_ID }}
+  RUN_REGION: us-central1
+  SERVICE_NAME: webapp-starter
+jobs:
+  build-docker-hub:
+    name: Build it!
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 #   #     - name: Build and push Docker images
 #   #       uses: docker/build-push-action@v1
 #   #       with:
@@ -26,6 +25,7 @@
 #   #         tag_with_ref: true
 #   #         tag_with_sha: true
 #   #         tags: lates
+
 #   setup-build-deploy:
 #     name: Setup, Build, and Deploy
 #     runs-on: ubuntu-latest
