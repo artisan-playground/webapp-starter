@@ -20,6 +20,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Build vue-app
+        run: |
+          pushd vue-app
+          yarn install
+          yarn build
+          popd
+          # ./build.sh
+          # docker build -t "$PROJECT_ID/$SERVICE_NAME:${GITHUB_SHA}" .
       - name: Build and push Docker images
         uses: docker/build-push-action@v1
         with:
@@ -28,7 +36,3 @@ jobs:
           repository: ${{ secrets.DOCKER_REPO }}
           tag_with_ref: true
           push: ${{ startsWith(github.ref, 'refs/tags/') }}
-      # - name: Build
-      #   run: |
-      #     ./build.sh
-      #     docker build -t "$PROJECT_ID/$SERVICE_NAME:${GITHUB_SHA}" .
