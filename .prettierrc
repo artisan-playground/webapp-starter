@@ -2,13 +2,5 @@
   "printWidth": 100,
   "semi": false,
   "singleQuote": true,
-  "trailingComma": "es5",
-  "overrides": [
-    {
-      "files": "*.yml",
-      "options": {
-        "singleQuote": false
-      }
-    }
-  ]
+  "trailingComma": "es5"
 }
