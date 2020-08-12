@@ -19,6 +19,10 @@ app.get('/', (req, res) => {
   res.status(200).send(`Welcome to webapp-starter api v${version}`)
 })
 
+app.get('/api/version', (req, res) => {
+  res.status(200).send(`${version}`)
+})
+
 app.get('/api/test-cases', (req, res) => {
   res.json([
     {
