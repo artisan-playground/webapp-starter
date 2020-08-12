@@ -1,0 +1,9 @@
+node_modules
+package-lock.json
+*.log
+.env-debug
+yarn.lock
+out
+.vscode
+temp
+*.DS_Store
