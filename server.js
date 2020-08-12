@@ -19,7 +19,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(morgan('dev'))
 
-app.get('version', (req, res) => {
+app.get('/api', (req, res) => {
   res.status(200).send(`Welcome to webapp-starter api v${version}`)
 })
 
