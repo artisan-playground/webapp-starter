@@ -3,10 +3,8 @@ on:
   push:
 
 env:
-  PROJECT_ID: nazt
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-  DOCKER_REPO: ${{ secrets.DOCKER_REPO }}
 
 jobs:
   build-docker-hub:
@@ -24,7 +22,6 @@ jobs:
           yarn install
           yarn build
           popd
-          #
           # ./build.sh
           # docker build -t "$PROJECT_ID/$SERVICE_NAME:${GITHUB_SHA}" .
       - name: Build and push Docker images
@@ -32,10 +29,9 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          # repository: ${{ secrets.DOCKER_REPO }}
           repository: 'nazt/xxz'
           tags: latest
           tag_with_ref: true
           tag_with_sha: true
           # push: ${{ startsWith(github.ref, 'refs/tags/') }}
-#         registry: gcr.io
+          # registry: gcr.io
