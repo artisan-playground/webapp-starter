@@ -24,6 +24,7 @@ jobs:
           yarn install
           yarn build
           popd
+          #
           # ./build.sh
           # docker build -t "$PROJECT_ID/$SERVICE_NAME:${GITHUB_SHA}" .
       - name: Build and push Docker images
