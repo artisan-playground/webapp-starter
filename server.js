@@ -16,7 +16,7 @@ admin.initializeApp({
 
 //add other middleware
 
-app.use(express.static('react-app/build'))
+app.use(express.static('dist'))
 // app.use('/react', express.static('react-app/build'))
 // app.use('/vue', express.static('vue-app/dist'))
 
