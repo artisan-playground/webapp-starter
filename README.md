@@ -11,3 +11,10 @@
     DOCKER_USERNAME
     DOCKER_PASSWORD
     DOCKER_REPO
+
+
+# usage
+    
+    ./build.sh vue-app
+    yarn server
+    
