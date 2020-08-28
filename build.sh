@@ -1,17 +1,14 @@
 #!/bin/bash
+set -e
 
-pushd vue-app
+args=("$@")
+
+if [ $# -lt 1 ]; then
+      echo "No arguments supplied"
+      exit -1
+fi
+
+pushd "${args[0]}"
 yarn install
 yarn build
 popd
-
-# pushd react-app
-# yarn install
-# yarn build
-# popd
-
-
-docker build -t nazt/webapp-starter .
-# docker push nazt/webapp-starter
-# docker run --rm -it -p4000:4000 --init nazt/webapp-starter
-# docker run --rm -it -p4000:4000 nazt/webapp-starter

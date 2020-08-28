@@ -18,11 +18,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Build vue-app
         run: |
-          pushd vue-app
-          yarn install
-          yarn build
-          popd
-          # ./build.sh
+          ./build.sh react-app
           # docker build -t "$PROJECT_ID/$SERVICE_NAME:${GITHUB_SHA}" .
       - name: Build and push Docker images
         uses: docker/build-push-action@v1
@@ -33,5 +29,3 @@ jobs:
           tags: latest
           tag_with_ref: true
           tag_with_sha: true
-          # push: ${{ startsWith(github.ref, 'refs/tags/') }}
-          # registry: gcr.io
