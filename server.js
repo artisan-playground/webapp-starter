@@ -18,7 +18,7 @@ admin.initializeApp({
 
 // app.use(express.static('react-app/build'))
 // app.use('/react', express.static('react-app/build'))
-app.use('/vue', express.static('vue-app/dist'))
+app.use(express.static('vue-app/dist'))
 
 app.use(cors())
 app.use(bodyParser.json())
