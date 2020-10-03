@@ -24,7 +24,7 @@ RUN yarn install --production
 # RUN pwd
 
 COPY ./dist ./
-COPY ./server.js .
+COPY ./server*.js ./
 
 # Run the web service on container startup.
 CMD [ "node", "server.js" ]
