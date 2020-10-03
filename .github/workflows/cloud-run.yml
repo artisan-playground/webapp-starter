@@ -6,8 +6,7 @@ on:
       - master
 
 env:
-  RUN_REGION: us-central1
-  SERVICE_NAME: helloworld-nodejs
+  RUN_REGION: asia-southeast1
 
 jobs:
   setup-build-deploy:
@@ -16,6 +15,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        env:
+          REPO_NAME: ${{ github.event.repository.name }}
       - name: Decrypt large secret
         run: ./.github/scripts/decrypt_secret.sh
         env:
@@ -25,28 +26,29 @@ jobs:
       - name: Set ENV
         run: |
           echo ::set-env name=PROJECT_ID::$(cat $HOME/secrets/my_secret.json | jq .project_id)
+          echo ::set-env name=PROJECT_ID::$(cat $HOME/secrets/my_secret.json | jq .client_email)
+          echo ::set-env name=SA_KEY::$(cat $HOME/secrets/my_secret.json | base64)
       - name: Test printing PROJECT_ID
         run: echo $PROJECT_ID
-        
       # Setup gcloud CLI
       - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
           version: '290.0.1'
-          service_account_key: ${{ secrets.RUN_SA_KEY }}
-          project_id: ${{ secrets.RUN_PROJECT }}
+          service_account_key: $SA_KEY
+          project_id: $PROJECT_ID
 
       # Build and push image to Google Container Registry
       - name: Build
         run: |-
           gcloud builds submit \
             --quiet \
-            --tag "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA"
+            --tag "gcr.io/$PROJECT_ID/$REPO_NAME:$GITHUB_SHA"
       # Deploy image to Cloud Run
       - name: Deploy
         run: |-
-          gcloud run deploy "$SERVICE_NAME" \
+          gcloud run deploy "$REPO_NAME" \
             --quiet \
             --region "$RUN_REGION" \
-            --image "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA" \
+            --image "gcr.io/$PROJECT_ID/$REPO_NAME:$GITHUB_SHA" \
             --platform "managed" \
             --allow-unauthenticated
