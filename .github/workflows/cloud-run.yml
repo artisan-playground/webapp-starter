@@ -24,10 +24,6 @@ jobs:
       - name: Set ENV
         run: |
           echo ::set-env name=PROJECT_ID::$(cat $HOME/secrets/my_secret.json | jq -r .project_id)
-      - name: Test printing PROJECT_ID
-        run: echo $PROJECT_ID
-      - name: Test printing PROJECT_ID
-        run: echo $PROJECT_ID
       # Setup gcloud CLI
       - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
@@ -35,9 +31,11 @@ jobs:
           service_account_key: ${{ secrets.SA_KEY }}
           project_id: ${{ env.PROJECT_ID }}
       # Build and push image to Google Container Registry
-      - name: Build
+      - name: Local Build
         run: |-
           ./build.sh vue-app
+      - name: Google Build
+        run: |-
           gcloud builds submit \
             --quiet \
             --tag "gcr.io/$PROJECT_ID/$REPO_NAME:$GITHUB_SHA"
