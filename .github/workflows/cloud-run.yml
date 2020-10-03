@@ -17,12 +17,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        - name: Decrypt large secret
-          run: ./.github/scripts/decrypt_secret.sh
+      - name: Decrypt large secret
+        run: ./.github/scripts/decrypt_secret.sh
         env:
           LARGE_SECRET_PASSPHRASE: ${{ secrets.LARGE_SECRET_PASSPHRASE }}
-        - name: Test printing your secret (Remove this step in production)
-          run: cat $HOME/secrets/my_secret.json | jq .project_id
+      - name: Test printing your secret (Remove this step in production)
+        run: cat $HOME/secrets/my_secret.json | jq .project_id
       # Setup gcloud CLI
       - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
