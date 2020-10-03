@@ -16,17 +16,14 @@ ENV NODE_ENV=production
 # RUN npm install --only=production
 
 # Copy local code to the container image.
-COPY . /usr/src/app
-# RUN npm install --only=production
+# COPY . /usr/src/app
 RUN yarn install --production
 
-RUN ./build.sh react-app
+# RUN ./build.sh react-app
 # COPY build.sh ./
 # RUN pwd
-# COPY ./vue-app ./
-# COPY ./vue-app/dist ./dist
-# COPY ./react-app/build ./dist
 
+COPY ./dist ./
 COPY ./server.js .
 
 # Run the web service on container startup.

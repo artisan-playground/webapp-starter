@@ -9,7 +9,6 @@ if [ $# -lt 1 ]; then
 fi
 
 pushd "${args[0]}"
-
 yarn install
 yarn build
 popd
