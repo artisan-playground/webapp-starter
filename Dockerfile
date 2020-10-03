@@ -17,7 +17,10 @@ RUN npm install --only=production
 
 # Copy local code to the container image.
 
+ADD build.sh .
+RUN ./build.sh vue-app
 COPY ./vue-app/dist ./dist
+
 # COPY ./react-app/build ./dist
 
 COPY ./server.js .

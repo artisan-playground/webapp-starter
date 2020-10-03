@@ -1,5 +1,4 @@
 name: Build and Deploy to Cloud Run
-
 on:
   push:
     branches:
@@ -50,3 +49,5 @@ jobs:
             --image "gcr.io/$PROJECT_ID/$REPO_NAME:$GITHUB_SHA" \
             --platform "managed" \
             --allow-unauthenticated
+
+# https://www.edwardthomson.com/blog/github_actions_15_sharing_data_between_steps.html
