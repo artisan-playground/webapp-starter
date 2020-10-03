@@ -34,7 +34,7 @@ jobs:
       - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
           version: 'latest'
-          service_account_key: ${{ env.SA_KEY }}
+          service_account_key: $SA_KEY
           project_id: ${{ env.PROJECT_ID }}
 
       # Build and push image to Google Container Registry
