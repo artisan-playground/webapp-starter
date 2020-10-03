@@ -26,6 +26,8 @@ jobs:
           echo ::set-env name=PROJECT_ID::$(cat $HOME/secrets/my_secret.json | jq -r .project_id)
           echo ::set-env name=SA_EMAIL::$(cat $HOME/secrets/my_secret.json | jq -r .client_email)
           echo ::set-env name=SA_KEY::$(cat $HOME/secrets/my_secret.json | base64)
+          echo "::add-mask::$SA_KEY"
+          echo "::add-mask::$SA_EMAIL"
       - name: Test printing PROJECT_ID
         run: echo $PROJECT_ID
       # Setup gcloud CLI
