@@ -15,6 +15,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - name: Decrypt large secret
         run: ./.github/scripts/decrypt_secret.sh
         env:
@@ -33,9 +37,9 @@ jobs:
       # Build and push image to Google Container Registry
       - name: Local Build
         run: |-
+          ./build.sh vue-app
       - name: Google Build
         run: |-
-          ./build.sh vue-app
           gcloud builds submit \
             --quiet \
             --tag "gcr.io/$PROJECT_ID/$REPO_NAME:$GITHUB_SHA"
