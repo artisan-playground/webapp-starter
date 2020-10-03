@@ -33,9 +33,9 @@ jobs:
       # Build and push image to Google Container Registry
       - name: Local Build
         run: |-
-          ./build.sh vue-app
       - name: Google Build
         run: |-
+          ./build.sh vue-app
           gcloud builds submit \
             --quiet \
             --tag "gcr.io/$PROJECT_ID/$REPO_NAME:$GITHUB_SHA"
