@@ -35,7 +35,6 @@ jobs:
           version: 'latest'
           service_account_key: ${{ secrets.SA_KEY }}
           project_id: ${{ env.PROJECT_ID }}
-
       # Build and push image to Google Container Registry
       - name: Build
         run: |-
