@@ -24,9 +24,10 @@ jobs:
         run: cat $HOME/secrets/my_secret.json | jq .project_id
       - name: Set ENV
         run: |
-        echo ::set-env name=PROJECT_ID::$(cat $HOME/secrets/my_secret.json | jq .project_id)
+          echo ::set-env name=PROJECT_ID::$(cat $HOME/secrets/my_secret.json | jq .project_id)
       - name: Test printing PROJECT_ID
         run: echo $PROJECT_ID
+        
       # Setup gcloud CLI
       - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
