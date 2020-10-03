@@ -20,7 +20,7 @@ COPY . /usr/src/app
 # RUN npm install --only=production
 RUN yarn install --production
 
-RUN  ./build.sh vue-app
+RUN ./build.sh react-app
 # COPY build.sh ./
 # RUN pwd
 # COPY ./vue-app ./

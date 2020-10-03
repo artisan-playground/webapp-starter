@@ -21,7 +21,6 @@ if [[ "${args[0]}" = "vue-app" ]]; then
 elif [[ "${args[0]}" = "react-app" ]]; then
     echo "react-app"
     rm -Rf dist
-    mv vue-app/dist dist
     mv react-app/build dist
 fi
 
