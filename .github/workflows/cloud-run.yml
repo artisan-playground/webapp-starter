@@ -15,12 +15,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        env:
-          REPO_NAME: ${{ github.event.repository.name }}
       - name: Decrypt large secret
         run: ./.github/scripts/decrypt_secret.sh
         env:
           LARGE_SECRET_PASSPHRASE: ${{ secrets.LARGE_SECRET_PASSPHRASE }}
+          REPO_NAME: ${{ github.event.repository.name }}
       - name: Test printing your secret (Remove this step in production)
         run: cat $HOME/secrets/my_secret.json | jq .project_id
       - name: Set ENV
@@ -33,7 +32,7 @@ jobs:
       # Setup gcloud CLI
       - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
-          version: '290.0.1'
+          version: 'latest'
           service_account_key: ${{ env.SA_KEY }}
           project_id: ${{ env.PROJECT_ID }}
 
