@@ -14,10 +14,12 @@ ENV NODE_ENV=production
 
 # Install production dependencies.
 # RUN npm install --only=production
-RUN npm install --only=production
 
 # Copy local code to the container image.
 COPY . /usr/src/app
+# RUN npm install --only=production
+RUN yarn install --production
+
 RUN  ./build.sh vue-app
 # COPY build.sh ./
 # RUN pwd
