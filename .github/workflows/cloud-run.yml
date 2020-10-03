@@ -7,6 +7,7 @@ on:
 
 env:
   RUN_REGION: asia-southeast1
+  REPO_NAME: ${{ github.event.repository.name }}
 
 jobs:
   setup-build-deploy:
@@ -24,31 +25,25 @@ jobs:
       - name: Set ENV
         run: |
           echo ::set-env name=PROJECT_ID::$(cat $HOME/secrets/my_secret.json | jq -r .project_id)
-          echo ::set-env name=SA_EMAIL::$(cat $HOME/secrets/my_secret.json | jq -r .client_email)
-          echo ::set-env name=SA_KEY::$(cat $HOME/secrets/my_secret.json | base64)
-          echo ::add-mask::$SA_KEY
-          echo ::add-mask::$SA_EMAIL
+      - name: Test printing PROJECT_ID
+        run: echo $PROJECT_ID
       - name: Test printing PROJECT_ID
         run: echo $PROJECT_ID
       # Setup gcloud CLI
       - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
           version: 'latest'
-          service_account_key: ${{ env.SA_KEY }}
+          service_account_key: ${{ secrets.SA_KEY }}
           project_id: ${{ env.PROJECT_ID }}
 
       # Build and push image to Google Container Registry
       - name: Build
-        env:
-          REPO_NAME: ${{ github.event.repository.name }}
         run: |-
           gcloud builds submit \
             --quiet \
             --tag "gcr.io/$PROJECT_ID/$REPO_NAME:$GITHUB_SHA"
       # Deploy image to Cloud Run
       - name: Deploy
-        env:
-          REPO_NAME: ${{ github.event.repository.name }}
         run: |-
           gcloud run deploy "$REPO_NAME" \
             --quiet \
