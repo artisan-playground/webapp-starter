@@ -12,6 +12,7 @@ pushd "${args[0]}"
 yarn install
 yarn build
 popd
+pwd
 
 if [[ "${args[0]}" = "vue-app" ]]; then
     echo "vue-app"
