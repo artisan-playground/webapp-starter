@@ -1,4 +1,4 @@
-name: Artisan Playground [dev]
+name: Artisan Playground [master]
 on:
   push:
     branches: [master]
