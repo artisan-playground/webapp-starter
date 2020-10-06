@@ -1,0 +1,17 @@
+name: Build App
+on:
+  push:
+
+jobs:
+  build-app:
+    name: Build it!
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build vue-app
+        run: |
+          ./build.sh react-app

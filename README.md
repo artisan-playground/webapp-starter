@@ -1,13 +1,7 @@
 # webapp-starter
 
-## secret
-
-    SA_EMAIL
-    GOOGLE_APPLICATION_CREDENTIALS
-    PROJECT_ID
-    SERVICE_NAME
-    RUN_REGION
+# usage
     
-    DOCKER_USERNAME
-    DOCKER_PASSWORD
-    DOCKER_REPO
+    ./build.sh vue-app
+    yarn server
+    
