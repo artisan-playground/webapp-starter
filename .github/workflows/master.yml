@@ -18,12 +18,22 @@ jobs:
           version: 'latest'
           service_account_key: ${{ env.SA }}
           project_id: ${{ env.PROJECT_ID }}
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - uses: actions/cache@v2
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
       - run: ./build.sh vue-app
       - name: Local Build
         run: |-
           gcloud auth configure-docker
           docker build -t "gcr.io/$PROJECT_ID/$REPO_NAME:${GITHUB_SHA}" .
-          docker push -t "gcr.io/$PROJECT_ID/$REPO_NAME:${GITHUB_SHA}"
+      - run: docker push "gcr.io/$PROJECT_ID/$REPO_NAME:${GITHUB_SHA}"
       - run: |
           gcloud builds submit \
               --tag gcr.io/$PROJECT_ID/$REPO_NAME:$GITHUB_RUN_NUMBER --verbosity=debug
