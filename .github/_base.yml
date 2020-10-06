@@ -22,9 +22,9 @@ jobs:
       - name: Local Build
         run: |-
           gcloud auth configure-docker
+          ./build.sh vue-app
           docker build -t "gcr.io/$PROJECT_ID/$REPO_NAME:${GITHUB_SHA}" .
           docker push -t "gcr.io/$PROJECT_ID/$REPO_NAME:${GITHUB_SHA}"
-          # ./build.sh vue-app
       - run: |
           gcloud builds submit \
               --tag gcr.io/$PROJECT_ID/$REPO_NAME:$GITHUB_RUN_NUMBER --verbosity=debug
