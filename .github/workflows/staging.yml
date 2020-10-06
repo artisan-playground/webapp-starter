@@ -1,0 +1,37 @@
+name: Artisan Playground [staging]
+on:
+  push:
+    branches: [staging]
+env:
+  PROJECT_ID: artisan-playground
+  RUN_REGION: asia-southeast1
+  REPO_NAME: ${{ github.event.repository.name }}
+  SA: ${{ secrets.SA_ARTISAN_PLAYGROUND }}
+jobs:
+  deploy:
+    runs-on: [ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: nelonoel/branch-name@v1
+      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          version: 'latest'
+          service_account_key: ${{ env.SA }}
+          project_id: ${{ env.PROJECT_ID }}
+      - name: Local Build
+        run: |-
+          ./build.sh vue-app
+      - run: |
+          gcloud builds submit \
+              --tag gcr.io/$PROJECT_ID/$REPO_NAME:$GITHUB_RUN_NUMBER --verbosity=debug
+      - run: |
+          gcloud run deploy $BRANCH_NAME-$REPO_NAME \
+          --quiet \
+          --region $RUN_REGION \
+          --image gcr.io/$PROJECT_ID/$REPO_NAME:$GITHUB_RUN_NUMBER \
+          --platform managed \
+          --allow-unauthenticated
+      - run: |
+          # docker build -t
+      - run: |
+          echo "hello world :)"
