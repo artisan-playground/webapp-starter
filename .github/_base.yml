@@ -41,7 +41,7 @@ jobs:
           gcloud builds submit \
               --tag gcr.io/$PROJECT_ID/$REPO_NAME:$GITHUB_RUN_NUMBER --verbosity=debug
       - run: |
-          gcloud run deploy $REPO_OWNER-$BRANCH_NAME-$REPO_NAME \
+          gcloud run deploy $BRANCH_NAME-$REPO_NAME \
           --quiet \
           --region $RUN_REGION \
           --image gcr.io/$PROJECT_ID/$REPO_NAME:$GITHUB_RUN_NUMBER \
