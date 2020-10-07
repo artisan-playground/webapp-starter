@@ -32,11 +32,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
       - run: ./build.sh vue-app
+      - run: gcloud auth configure-docker
       - name: Local Build
-        run: |-
-          pushd vue-app
-          gcloud auth configure-docker
-          docker build -t "gcr.io/$PROJECT_ID/$REPO_NAME:${GITHUB_RUN_NUMBER}" .
+        run: docker build -t "gcr.io/$PROJECT_ID/$REPO_NAME:${GITHUB_RUN_NUMBER}" .
       - run: docker push "gcr.io/$PROJECT_ID/$REPO_NAME:${GITHUB_RUN_NUMBER}"
       # - run: |
       #     gcloud builds submit \
