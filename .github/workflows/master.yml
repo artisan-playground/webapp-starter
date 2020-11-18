@@ -13,7 +13,7 @@ jobs:
     runs-on: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v2
-      - uses: nelonoel/branch-name@v1
+      - uses: nelonoel/branch-name@v1.0.1
       - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
           version: 'latest'
